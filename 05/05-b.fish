@@ -26,10 +26,8 @@ while read line
 		set inst (string match -r -g 'move ([0-9]+) from ([0-9]+) to ([0-9]+)' $line)
 
 		# Move crates
-		for move in (seq $inst[1])
-			set $inst[3] $$inst[3] $$inst[2][-1]
-			set -e $inst[2][-1]
-		end
+		set $inst[3] $$inst[3] $$inst[2][(math (count $$inst[2]) - $inst[1] + 1)..-1]
+		set -e $inst[2][(math (count $$inst[2]) - $inst[1] + 1)..-1]
 
 	# Parsing stacks
 	else if string match -q -r '[0-9]' $line
