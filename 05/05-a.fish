@@ -3,15 +3,6 @@
 set n 0
 set i 1
 
-function find_top -d 'Returns index for top crate of stack'
-	for j in (seq $n -1 1)
-		if string match -r -q '\[' $argv[$j]
-			echo $j
-			break
-		end
-	end
-end
-
 while read line
 	# Parsing crates
 	if string match -q -r '\[' $line
@@ -39,7 +30,7 @@ while read line
 			# Reverse lists so they can grow
 			set -g $stack $$stack[1..-1][-1..1]
 			# Remove spaces
-			set -g $stack $$stack[1..-1][1..(find_top $$stack)]
+			set -g $stack $$stack[1..-1][1..(math (contains -i '   ' $$stack) - 1)]
 		end
 	end
 
